@@ -177,7 +177,26 @@ export default function App() {
   })
   return (
     <div style={{ height: "100vh", width: "100vw" }}>
-      
+      <Nav
+        markers={markers!}
+        setMarkers={setMarkers}
+        filter={filter}
+        setFilter={setFilter}
+        queries={queries}
+        setQueries={setQueries}
+      />
+      <div>
+        {markers != undefined && (
+          <Map
+            markers={markers!}
+            setMarkers={setMarkers}
+            filter={filter}
+            setFilter={setFilter}
+            queries={queries}
+            setQueries={setQueries}
+          />
+        )}
+      </div>
     </div>
   );
 }
