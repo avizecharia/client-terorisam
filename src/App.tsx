@@ -96,41 +96,46 @@ export default function App() {
   socket.on('year-trend', (data) => {
     const list = []
     for (const element of data as IPropsForMarkers[]) {
-      const dataNaccessery = {year:element.year,month:element.month,numEvent:element.numEvent}
+      const dataNaccessery = { year: element.year, month: element.month, numEvent: element.numEvent }
       list.push(dataNaccessery)
-    }  
+    }
     setThird(list)
   })
 
   socket.on('year-range-trend', (data) => {
     const list = []
-    for (const element1 of data as IPropsForMarkers[]) {
+    for (const element1 of data as IPropsForMarkers[][]) {
+      const data = {year:element1[0].year,numEvent:0}
       for (const element of element1 as IPropsForMarkers[]) {
-        const dataNaccessery = { year: element.year, month: element.month, numEvent: element.numEvent }
-        list.push(dataNaccessery)
+        data.numEvent += element.numEvent!
       }
-
-    }
-    console.log(list);
-    
+      list.push(data)
+    }  
     setThird(list)
   })
 
   socket.on('5year-trend', (data) => {
     const list = []
-    for (const element of data as IPropsForMarkers[]) {
-      const dataNaccessery = {year:element.year,month:element.month,numEvent:element.numEvent}
-      list.push(dataNaccessery)
-    }  
+    for (const element1 of data as IPropsForMarkers[][]) {
+      const data = {year:element1[0].year,numEvent:0}
+      for (const element of element1 as IPropsForMarkers[]) {
+        data.numEvent += element.numEvent!
+      }
+      list.push(data)
+    }
+    console.log(list)
     setThird(list)
   })
 
   socket.on('10year-trend', (data) => {
     const list = []
-    for (const element of data as IPropsForMarkers[]) {
-      const dataNaccessery = {year:element.year,month:element.month,numEvent:element.numEvent}
-      list.push(dataNaccessery)
-    }  
+    for (const element1 of data as IPropsForMarkers[][]) {
+      const data = {year:element1[0].year,numEvent:0}
+      for (const element of element1 as IPropsForMarkers[]) {
+        data.numEvent += element.numEvent!
+      }
+      list.push(data)
+    } 
     setThird(list)
   })
 
