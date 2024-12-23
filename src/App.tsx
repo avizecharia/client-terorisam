@@ -66,13 +66,13 @@ export default function App() {
   })
 
   socket.on('region-most-hurts', (data) => {
-    const list = []
-    for (const element of data as IPropsForMarkers[]) {
-      const avarage = element.numCasualties as number / element.locationArr!.length as number
-      const dataNaccessery = {region:element.region,numCasualties:avarage,country:element.country,city:element.city,locationArr:element.locationArr}
-      list.push(dataNaccessery)
-    }  
-    setMarkers(list)
+    // const list = []
+    // for (const element of data as IPropsForMarkers[]) {
+    //   const avarage = element.numCasualties as number / element.locationArr!.length as number
+    //   const dataNaccessery = {region:element.region,numCasualties:avarage,country:element.country,city:element.city,locationArr:element.locationArr}
+    //   list.push(dataNaccessery)
+    // }  
+    setMarkers(data)
   })
 
   socket.on('country-most-hurts', (data) => {
