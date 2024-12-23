@@ -135,7 +135,7 @@ export default function Select({ markers, setMarkers, filter, setFilter, queries
   return (
     <>
       <select onChange={(e) => setFilter(e.target.value as any)}>
-        <option selected value={queries[0].value}>{queries[0].sentence}</option>
+        <option value={queries[0].value}>{queries[0].sentence}</option>
         <option value={queries[1].value}>{queries[1].sentence}</option>
         <option value={queries[2].value}>{queries[2].sentence}</option>
         <option value={queries[3].value}>{queries[3].sentence}</option>
