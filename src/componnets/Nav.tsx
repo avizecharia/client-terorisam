@@ -32,6 +32,10 @@ export default function Nav({ filter, setFilter, queries, setQueries,markers,set
         <Graph bars={[{ key: "numEvent", color: "#7344d8", name: "num of events" }]} data={third!} xKey={'month'} /> : ""}
       {filter == 3.1 ?
         <Graph bars={[{ key: "numEvent", color: "#2344d8", name: "num of events" }]} data={third!} xKey={'year'} /> : ""}
+         {filter == 3.2 ?
+                <Graph bars={[{ key: "numEvent", color: "#2344d8", name: "num of events" }]} data={third!} xKey={'year'} /> : ""}
+            {filter == 3.3 ?
+                <Graph bars={[{ key: "numEvent", color: "#2344d8", name: "num of events" }]} data={third!} xKey={'year'} /> : ""}
     </div>
   );
 }
