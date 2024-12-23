@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { IPropsForMarkers, IQuery } from "../types/interfaces";
-import Select from "./select";
+import Select from "./Select";
 interface Props {
   markers: IPropsForMarkers[];
   setMarkers: (n: IPropsForMarkers[]) => void;

@@ -1,3 +1,4 @@
+
  
 export interface ISecDAta{
     region:string,
@@ -21,7 +22,7 @@ export  interface IPropsForMarkers {
     lon?: number
     attackType?:string
     numCasualties?:number
-    region?:string
+    region?:string 
     country?:string
     city?:string
     locationArr?:{lat:number,lon:number}[]
