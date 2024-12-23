@@ -133,23 +133,12 @@ export default function App() {
 
   socket.on('region-topFive', (data) => {
     setTopFive(data)
-    const list = []
-    for (const element of data as IPropsForMarkers[]) {
-      const dataNaccessery = {region:element.region,organizeTopFive:element.organizeTopFive}
-      list.push(dataNaccessery)
-    }  
-    setMarkers(list)
-
+    setMarkers(data)
   })
 
   socket.on('all-region-topFive', (data) => { 
-    setTopFive(data)
-    const list = []
-    for (const element of data as IPropsForMarkers[]) {
-      const dataNaccessery = {region:element.region,organizeTopFive:element.organizeTopFive}
-      list.push(dataNaccessery)
-    }  
-    setMarkers(list)
+    setTopFive(data) 
+    setMarkers(data)
 
   })
 
@@ -173,12 +162,7 @@ export default function App() {
 
   socket.on('org-most-events-area', (data) => {
      setSixth(data)
-     const list = []
-     for (const element of data as IPropsForMarkers[]) {
-       const dataNaccessery = {organizationName:element.organizationName,numEvent:element.numEvent,year:element.year}
-       list.push(dataNaccessery)
-     }  
-     setMarkers(list)
+     setMarkers(data)
   })
   return (
     <div style={{ height: "100vh", width: "100vw" }}>
