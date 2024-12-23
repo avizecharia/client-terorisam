@@ -43,8 +43,8 @@ export default function App() {
     query14,
   ]);
   const [markers, setMarkers] = useState<IPropsForMarkers[]>();
- 
- 
+ const [topFive,setTopFive] = useState<IPropsForMarkers[]>()
+  const [sixth, setSixth] = useState<IPropsForMarkers[]>()
 
   socket.on('kind-attacks', (data) => {
     const list = []
@@ -132,21 +132,25 @@ export default function App() {
   })
 
   socket.on('region-topFive', (data) => {
+    setTopFive(data)
     const list = []
     for (const element of data as IPropsForMarkers[]) {
       const dataNaccessery = {region:element.region,organizeTopFive:element.organizeTopFive}
       list.push(dataNaccessery)
     }  
     setMarkers(list)
+
   })
 
-  socket.on('all-region-topFive', (data) => {
+  socket.on('all-region-topFive', (data) => { 
+    setTopFive(data)
     const list = []
     for (const element of data as IPropsForMarkers[]) {
       const dataNaccessery = {region:element.region,organizeTopFive:element.organizeTopFive}
       list.push(dataNaccessery)
     }  
     setMarkers(list)
+
   })
 
   socket.on('events-year', (data) => {
@@ -168,12 +172,13 @@ export default function App() {
   })
 
   socket.on('org-most-events-area', (data) => {
-    const list = []
-    for (const element of data as IPropsForMarkers[]) {
-      const dataNaccessery = {organizationName:element.organizationName,numEvent:element.numEvent,year:element.year}
-      list.push(dataNaccessery)
-    }  
-    setMarkers(list)
+     setSixth(data)
+     const list = []
+     for (const element of data as IPropsForMarkers[]) {
+       const dataNaccessery = {organizationName:element.organizationName,numEvent:element.numEvent,year:element.year}
+       list.push(dataNaccessery)
+     }  
+     setMarkers(list)
   })
   return (
     <div style={{ height: "100vh", width: "100vw" }}>
@@ -194,6 +199,10 @@ export default function App() {
             setFilter={setFilter}
             queries={queries}
             setQueries={setQueries}
+            topFive={topFive!}
+            setTopFive={setTopFive}
+            sixth={sixth!}
+             setSixth={setSixth}
           />
         )}
       </div>
