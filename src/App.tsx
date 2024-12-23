@@ -23,6 +23,7 @@ import {
 } from "./IQuery";
 import Map from "./componnets/Map";
 import { socket } from "./main";
+import Graph from "./componnets/Grafh";
 
 export default function App() {
   const [filter, setFilter] = React.useState<number>(0);
@@ -45,14 +46,11 @@ export default function App() {
   const [markers, setMarkers] = useState<IPropsForMarkers[]>();
  const [topFive,setTopFive] = useState<IPropsForMarkers[]>()
   const [sixth, setSixth] = useState<IPropsForMarkers[]>()
+  const [first, setfirst] = useState<IPropsForMarkers[]>()
+  const [third, setThird] = useState<IPropsForMarkers[]>()
 
   socket.on('kind-attacks', (data) => {
-    const list = []
-    for (const element of data as IPropsForMarkers[]) {
-      const dataNaccessery:IPropsForMarkers|null = {attackType:element.attackType,numCasualties:element.numCasualties}
-      list.push(dataNaccessery)
-    }
-    setMarkers(list)
+    setfirst(data)
   })
 
   socket.on('all-most-hurts', (data) => {
@@ -66,13 +64,13 @@ export default function App() {
   })
 
   socket.on('region-most-hurts', (data) => {
-    // const list = []
-    // for (const element of data as IPropsForMarkers[]) {
-    //   const avarage = element.numCasualties as number / element.locationArr!.length as number
-    //   const dataNaccessery = {region:element.region,numCasualties:avarage,country:element.country,city:element.city,locationArr:element.locationArr}
-    //   list.push(dataNaccessery)
-    // }  
-    setMarkers(data)
+    const list = []
+    for (const element of data as IPropsForMarkers[]) {
+      const avarage = element.numCasualties as number / element.locationArr!.length as number
+      const dataNaccessery = {region:element.region,numCasualties:avarage,country:element.country,city:element.city,locationArr:element.locationArr}
+      list.push(dataNaccessery)
+    }  
+    setMarkers(list)
   })
 
   socket.on('country-most-hurts', (data) => {
@@ -101,16 +99,21 @@ export default function App() {
       const dataNaccessery = {year:element.year,month:element.month,numEvent:element.numEvent}
       list.push(dataNaccessery)
     }  
-    setMarkers(list)
+    setThird(list)
   })
 
   socket.on('year-range-trend', (data) => {
     const list = []
-    for (const element of data as IPropsForMarkers[]) {
-      const dataNaccessery = {year:element.year,month:element.month,numEvent:element.numEvent}
-      list.push(dataNaccessery)
-    }  
-    setMarkers(list)
+    for (const element1 of data as IPropsForMarkers[]) {
+      for (const element of element1 as IPropsForMarkers[]) {
+        const dataNaccessery = { year: element.year, month: element.month, numEvent: element.numEvent }
+        list.push(dataNaccessery)
+      }
+
+    }
+    console.log(list);
+    
+    setThird(list)
   })
 
   socket.on('5year-trend', (data) => {
@@ -119,7 +122,7 @@ export default function App() {
       const dataNaccessery = {year:element.year,month:element.month,numEvent:element.numEvent}
       list.push(dataNaccessery)
     }  
-    setMarkers(list)
+    setThird(list)
   })
 
   socket.on('10year-trend', (data) => {
@@ -128,7 +131,7 @@ export default function App() {
       const dataNaccessery = {year:element.year,month:element.month,numEvent:element.numEvent}
       list.push(dataNaccessery)
     }  
-    setMarkers(list)
+    setThird(list)
   })
 
   socket.on('region-topFive', (data) => {
@@ -173,6 +176,10 @@ export default function App() {
         setFilter={setFilter}
         queries={queries}
         setQueries={setQueries}
+        first={first!}
+        setfirst={setfirst}
+        third={third!}
+         setThird={setThird}
       />
       <div>
         {markers != undefined && (
@@ -189,6 +196,7 @@ export default function App() {
              setSixth={setSixth}
           />
         )}
+         
       </div>
     </div>
   );
