@@ -132,6 +132,7 @@ export default function Select({ markers, setMarkers, filter, setFilter, queries
   return (
     <>
       <select onChange={(e) => setFilter(e.target.value as any)}>
+      <option disabled selected>Choose one</option>
         {/* {1 all attack type} */}
         <option value={queries[0].value}>{queries[0].sentence}</option>
         {/* {2  all-most-hurts  } */}
