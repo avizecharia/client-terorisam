@@ -13,8 +13,12 @@ interface Props {
   setFilter: (num: number) => void;
   queries: IQuery[];
   setQueries: Dispatch<SetStateAction<IQuery[]>>
+  topFive: IPropsForMarkers[]
+  setTopFive: (n: IPropsForMarkers[]) => void;
+  sixth: IPropsForMarkers[]
+  setSixth: (n: IPropsForMarkers[]) => void;
 }
-export default function Map({ filter, setFilter, queries, setQueries,markers,setMarkers }: Props) {
+export default function Map({ filter, setFilter, queries, setQueries,markers,setMarkers,setTopFive,topFive ,setSixth,sixth}: Props) {
   function SetMapCenter({ center }: { center: [number, number] }) {
     const map = useMap();
     
@@ -104,31 +108,74 @@ export default function Map({ filter, setFilter, queries, setQueries,markers,set
           </div>
              :
           
-          filter == 4 ? <div> 
-          <MapContainer center={getLAtLonbyArea(markers[0].region!) as LatLngExpression | undefined}zoom={10}scrollWheelZoom={false}style={{ height: "80vh" }}>
-          <SetMapCenter center={ getLAtLonbyArea(markers[0].region!)} />
+          filter == 4 ?  topFive != undefined && <div> 
+          <MapContainer center={getLAtLonbyArea(topFive[0].region!) as LatLngExpression | undefined}zoom={10}scrollWheelZoom={false}style={{ height: "80vh" }}>
+          <SetMapCenter center={ getLAtLonbyArea(topFive[0].region!)} />
            <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
              {filter == 4 && <>
              <Marker 
-             position={getLAtLonbyArea(markers[0].region!)}>
-              <Popup> region:{markers[0].region}<br></br>
-              top1:{markers![0].organizeTopFive![0].organName}<br></br>
-              top1:{markers![0].organizeTopFive![0].numEvent}<br></br>
-              top2:{markers![0].organizeTopFive![1].organName}<br></br>
-              top2:{markers![0].organizeTopFive![1].numEvent}<br></br>
-              top3:{markers![0].organizeTopFive![2].organName}<br></br>
-              top3:{markers![0].organizeTopFive![2].numEvent}<br></br>
-              top4:{markers![0].organizeTopFive![3].organName}<br></br>
-              top4:{markers![0].organizeTopFive![3].numEvent}<br></br>
-              top5:{markers![0].organizeTopFive![4].organName}<br></br>
-              top5:{markers![0].organizeTopFive![4].numEvent}
+             position={getLAtLonbyArea(topFive[0].region!)}>
+              <Popup> region:{topFive[0].region}<br></br>
+              top1:{topFive![0].organizeTopFive![0].organName}<br></br>
+              top1:{topFive![0].organizeTopFive![0].numEvent}<br></br>
+              top2:{topFive![0].organizeTopFive![1].organName}<br></br>
+              top2:{topFive![0].organizeTopFive![1].numEvent}<br></br>
+              top3:{topFive![0].organizeTopFive![2].organName}<br></br>
+              top3:{topFive![0].organizeTopFive![2].numEvent}<br></br>
+              top4:{topFive![0].organizeTopFive![3].organName}<br></br>
+              top4:{topFive![0].organizeTopFive![3].numEvent}<br></br>
+              top5:{topFive![0].organizeTopFive![4].organName}<br></br>
+              top5:{topFive![0].organizeTopFive![4].numEvent}
               </Popup>
 
                </Marker>
                </>
                } 
            </MapContainer> 
-          </div>:<>asdasd</>
+          </div>:
+          filter == 4.1 ?  topFive != undefined && <div> 
+          <MapContainer center={getLAtLonbyArea(topFive[0].region!) as LatLngExpression | undefined}zoom={10}scrollWheelZoom={false}style={{ height: "80vh" }}>
+          <SetMapCenter center={ getLAtLonbyArea(topFive[0].region!)} />
+           <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+             {filter == 4.1 && topFive != undefined && topFive.map(x => <>
+             <Marker 
+             position={getLAtLonbyArea(x.region!)}>
+              <Popup> region:{x.region}<br></br>
+              top1:{x.organizeTopFive![0].organName}<br></br>
+              top1:{x.organizeTopFive![0].numEvent}<br></br>
+              top2:{x.organizeTopFive![1].organName}<br></br>
+              top2:{x.organizeTopFive![1].numEvent}<br></br>
+              top3:{x.organizeTopFive![2].organName}<br></br>
+              top3:{x.organizeTopFive![2].numEvent}<br></br>
+              top4:{x.organizeTopFive![3].organName}<br></br>
+              top4:{x.organizeTopFive![3].numEvent}<br></br>
+              top5:{x.organizeTopFive![4].organName}<br></br>
+              top5:{x.organizeTopFive![4].numEvent}
+              </Popup>
+
+               </Marker>
+               </>)
+               } 
+           </MapContainer> 
+          </div>
+          :
+          filter == 6 ?  sixth != undefined && <div> 
+          <MapContainer center={getLAtLonbyArea(sixth[0].region!) as LatLngExpression | undefined}zoom={10}scrollWheelZoom={false}style={{ height: "80vh" }}>
+          <SetMapCenter center={ getLAtLonbyArea(sixth[0].region!)} />
+           <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+             {filter == 6 && sixth != undefined && sixth.map(x => <>
+             <Marker 
+             position={getLAtLonbyArea(x.region!)}>
+              <Popup> region:{x.region}<br></br>
+              organName:{x.organName}<br></br>
+              numCasualties:{x.numCasualties}<br></br> 
+              </Popup>
+               </Marker>
+               </>)
+               } 
+           </MapContainer> 
+          </div> :
+          <>asdasd</>
              }
     </div>
 }
