@@ -82,6 +82,7 @@ export default function Select({ markers, setMarkers, filter, setFilter, queries
 
   const sendEmitArea = () => {
     socket.emit('region-most-hurts', area)
+    console.log("object")
     setareaBool(false)
   }
 
@@ -150,7 +151,7 @@ export default function Select({ markers, setMarkers, filter, setFilter, queries
         <option value={queries[13].value}>{queries[13].sentence}</option>
       </select>
       {areaBool ? <input placeholder='enter region:' onChange={(e) => setarea(e.target.value)}></input> : 1}
-      {areaBool ? <button onClick={() => sendEmitArea}>send query</button> : 1}
+      {areaBool ? <button onClick={() =>{ sendEmitArea()}}>send query 1</button> : 1}
       {countryBool ? <input placeholder='enter country:' onChange={(e) => setcountry(e.target.value)}></input> : 1}
       {countryBool ? <button onClick={() => sendEmitCountry}>send query</button> : 1}
       {cityBool ? <input placeholder='enter vity:' onChange={(e) => setcity(e.target.value)}></input> : 1}
