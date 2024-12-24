@@ -12,7 +12,7 @@ interface Props {
 }
 
 
-export default function Select({ markers, setMarkers, filter, setFilter, queries }: Props) {
+export default function Select({ markers, filter, setFilter, queries }: Props) {
   const [areaBool, setareaBool] = useState(false)
   const [area, setarea] = useState("")
   const [countryBool, setcountryBool] = useState(false)
@@ -42,42 +42,139 @@ export default function Select({ markers, setMarkers, filter, setFilter, queries
       socket.emit('all-most-hurts',)
 
     if (filter == 2.1)
+    {
       setareaBool(true)
-
+      setcountryBool(false)
+      setcityBool(false)
+      setyearBool(false)
+      setyear2Bool(false)
+      setyearstartBool(false)
+      setyearendBool(false)
+      setregionBool(false)
+      setorganameBool(false)
+      setorganame2Bool(false)
+    }
     if (filter == 2.2)
+    {
+      setareaBool(false)
       setcountryBool(true)
+      setcityBool(false)
+      setyearBool(false)
+      setyear2Bool(false)
+      setyearstartBool(false)
+      setyearendBool(false)
+      setregionBool(false)
+      setorganameBool(false)
+      setorganame2Bool(false)
+    }
     if(filter == 2.3){
+      setareaBool(false)
+      setcountryBool(false)
       setcityBool(true)
+      setyearBool(false)
+      setyear2Bool(false)
+      setyearstartBool(false)
+      setyearendBool(false)
+      setregionBool(false)
+      setorganameBool(false)
+      setorganame2Bool(false)
     }
     if (filter == 3)
-      setyearBool(true)
+      {
+        setareaBool(false)
+        setcountryBool(false)
+        setcityBool(false)
+        setyearBool(true)
+        setyear2Bool(false)
+        setyearstartBool(false)
+        setyearendBool(false)
+        setregionBool(false)
+        setorganameBool(false)
+        setorganame2Bool(false)
+      }
 
     if (filter == 3.1)
-      setyearstartBool(true)
-    setyearendBool(true)
-
+    {
+      {
+        setareaBool(false)
+        setcountryBool(false)
+        setcityBool(false)
+        setyearBool(false)
+        setyear2Bool(false)
+        setyearstartBool(true)
+        setyearendBool(true)
+        setregionBool(false)
+        setorganameBool(false)
+        setorganame2Bool(false)
+      }
+    }
     if (filter == 3.2)
+      console.log(999)
       socket.emit('5year-trend',)
 
     if (filter == 3.3)
       socket.emit('10year-trend',)
 
     if (filter == 4)
-    setregionBool(true)
+      {
+        setareaBool(false)
+        setcountryBool(false)
+        setcityBool(false)
+        setyearBool(false)
+        setyear2Bool(false)
+        setyearstartBool(false)
+        setyearendBool(false)
+        setregionBool(true)
+        setorganameBool(false)
+        setorganame2Bool(false)
+      }
 
     if (filter == 4.1)
       socket.emit('all-region-topFive',)
 
     if (filter == 5)
-      setyear2Bool(true)
+      {
+        setareaBool(false)
+        setcountryBool(false)
+        setcityBool(false)
+        setyearBool(false)
+        setyear2Bool(true)
+        setyearstartBool(false)
+        setyearendBool(false)
+        setregionBool(false)
+        setorganameBool(false)
+        setorganame2Bool(false)
+      }
 
     if (filter == 5.1)
-      setorganameBool(true)
-
+      {
+        setareaBool(false)
+        setcountryBool(false)
+        setcityBool(false)
+        setyearBool(false)
+        setyear2Bool(false)
+        setyearstartBool(false)
+        setyearendBool(false)
+        setregionBool(false)
+        setorganameBool(true)
+        setorganame2Bool(false)
+      }
     if (filter == 6)
-      setorganame2Bool(true)
+      {
+        setareaBool(false)
+        setcountryBool(false)
+        setcityBool(false)
+        setyearBool(false)
+        setyear2Bool(false)
+        setyearstartBool(false)
+        setyearendBool(false)
+        setregionBool(false)
+        setorganameBool(false)
+        setorganame2Bool(true)
+      }
 
   }, [filter])
+
 
   const sendEmitArea = () => {
     socket.emit('region-most-hurts', area)
@@ -130,7 +227,7 @@ export default function Select({ markers, setMarkers, filter, setFilter, queries
 
 
   return (
-    <>
+    <div className='select'>
       <select onChange={(e) => setFilter(e.target.value as any)}>
       <option disabled selected>Choose one</option>
         {/* {1 all attack type} */}
@@ -162,25 +259,28 @@ export default function Select({ markers, setMarkers, filter, setFilter, queries
         {/* {6  Areas where certain organizations have carried out the deadliest attacks (by organization name)  setorganame2Bool} */}
         <option value={queries[13].value}>{queries[13].sentence}</option>
       </select>
-      {areaBool ? <input placeholder='enter region:' onChange={(e) => setarea(e.target.value)}></input> : 1}
-      {areaBool ? <button onClick={sendEmitArea}>send query 1</button> : 1}
-      {countryBool ? <input placeholder='enter country:' onChange={(e) => setcountry(e.target.value)}></input> : 1}
-      {countryBool ? <button onClick={sendEmitCountry}>send query</button> : 1}
-      {cityBool ? <input placeholder='enter vity:' onChange={(e) => setcity(e.target.value)}></input> : 1}
-      {cityBool ? <button onClick={sendEmitCity}>send query</button> : 1}
-      {yearBool ? <input placeholder='enter year (1971-2017):' onChange={(e) => setyear(e.target.value as unknown as number)}></input> : 1}
-      {yearBool ? <button onClick={sendEmitYear}>send query</button> : 1}
-      {yearstartBool ? <input placeholder='enter start year (1971-2017):' onChange={(e) => setyearstart(e.target.value as unknown as number)}></input> : 1}
-      {yearendBool ? <input placeholder='enter end year (1971-2017):' onChange={(e) => setyearend(e.target.value as unknown as number)}></input> : 1}
-      {yearendBool ? <button onClick={sendEmitRangeYear}>send query</button> : 1}
-      {regionBool ? <input placeholder='enter region:' onChange={(e) => setregion(e.target.value)}></input> : 1}
-      {regionBool ? <button onClick={sendEmitRegionTop5}>send query</button> : 1}
-      {year2Bool ? <input placeholder='enter year (1971 - 2017):' onChange={(e) => setyear2(e.target.value as unknown as number)}></input> : 1}
-      {year2Bool ? <button onClick={sendEmitYear5}>send query</button> : 1}
-      {organameBool ? <input placeholder='enter organization name:' onChange={(e) => setorganame(e.target.value)}></input> : 1}
-      {organameBool ? <button onClick={sendEmitOrganame}>send query</button> : 1}
-      {organame2Bool ? <input placeholder='enter organization name:' onChange={(e) => setorganame2(e.target.value)}></input> : 1}
-      {organame2Bool ? <button onClick={sendEmitOrganame2}>send query</button> : 1}
-    </>
+      <div className='input-buttom'>
+
+      {areaBool && <input placeholder='enter region:' onChange={(e) => setarea(e.target.value)}></input> }
+      {areaBool && <button onClick={sendEmitArea}>send query 1</button> }
+      {countryBool && <input placeholder='enter country:' onChange={(e) => setcountry(e.target.value)}></input> }
+      {countryBool && <button onClick={sendEmitCountry}>send query</button> }
+      {cityBool && <input placeholder='enter vity:' onChange={(e) => setcity(e.target.value)}></input> }
+      {cityBool && <button onClick={sendEmitCity}>send query</button> }
+      {yearBool && <input placeholder='enter year (1971-2017):' onChange={(e) => setyear(e.target.value as unknown as number)}></input> }
+      {yearBool && <button onClick={sendEmitYear}>send query</button> }
+      {yearstartBool && <input placeholder='enter start year (1971-2017):' onChange={(e) => setyearstart(e.target.value as unknown as number)}></input> }
+      {yearendBool && <input placeholder='enter end year (1971-2017):' onChange={(e) => setyearend(e.target.value as unknown as number)}></input> }
+      {yearendBool && <button onClick={sendEmitRangeYear}>send query</button> }
+      {regionBool && <input placeholder='enter region:' onChange={(e) => setregion(e.target.value)}></input> }
+      {regionBool && <button onClick={sendEmitRegionTop5}>send query</button> }
+      {year2Bool && <input placeholder='enter year (1971 - 2017):' onChange={(e) => setyear2(e.target.value as unknown as number)}></input> }
+      {year2Bool && <button onClick={sendEmitYear5}>send query</button> }
+      {organameBool && <input placeholder='enter organization name:' onChange={(e) => setorganame(e.target.value)}></input> }
+      {organameBool && <button onClick={sendEmitOrganame}>send query</button> }
+      {organame2Bool && <input placeholder='enter organization name:' onChange={(e) => setorganame2(e.target.value)}></input> }
+      {organame2Bool && <button onClick={sendEmitOrganame2}>send query</button> }
+      </div>
+    </div>
   );
 }

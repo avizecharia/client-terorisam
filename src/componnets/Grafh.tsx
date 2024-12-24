@@ -9,7 +9,8 @@ interface Props {
 
 const Graph: React.FC<Props> = ({ data, xKey, bars }: Props) => {
     return (
-        <ResponsiveContainer width="80%" height={500} style={{top:1000}}>
+        <div className='grafh'>
+        <ResponsiveContainer  >
             <BarChart data={data}>
                 <CartesianGrid strokeDasharray="4 4 " />
                 <XAxis dataKey={xKey} />
@@ -26,6 +27,7 @@ const Graph: React.FC<Props> = ({ data, xKey, bars }: Props) => {
                 ))}
             </BarChart>
         </ResponsiveContainer>
+        </div>
     )
 }
 
