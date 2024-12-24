@@ -1,53 +1,30 @@
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "./App.css";
-import { IPropsForMarkers, IQuery, ISecDAta } from "./types/interfaces";
+import { IPropsForMarkers, IQuery } from "./types/interfaces";
 import { useState } from "react";
 import Nav from "./componnets/Nav";
 import React from "react";
-import {
-  query1,
-  query10,
-  query11,
-  query12,
-  query13,
-  query14,
-  query2,
-  query3,
-  query4,
-  query5,
-  query6,
-  query7,
-  query8,
-  query9,
+import {query1,query10,query11,query12,query13,query14,query2,query3,query4,query5,query6,query7,query8,query9,
 } from "./IQuery";
 import Map from "./componnets/Map";
 import { socket } from "./main";
 import Graph from "./componnets/Grafh";
+ 
+// import CreateAttack from "./componnets/CreateAttack";
 
 export default function App() {
   const [filter, setFilter] = React.useState<number>(0);
   const [queries, setQueries] = useState<IQuery[]>([
-    query1,
-    query2,
-    query3,
-    query4,
-    query5,
-    query6,
-    query7,
-    query8,
-    query9,
-    query10,
-    query11,
-    query12,
-    query13,
-    query14,
+    query1,query2,query3,query4,query5,query6,query7,query8,query9,query10,query11,query12,query13,query14,
   ]);
   const [markers, setMarkers] = useState<IPropsForMarkers[]>();
  const [topFive,setTopFive] = useState<IPropsForMarkers[]>()
   const [sixth, setSixth] = useState<IPropsForMarkers[]>()
   const [first, setfirst] = useState<IPropsForMarkers[]>()
   const [third, setThird] = useState<IPropsForMarkers[]>()
+  const [fourth, setfourth] = useState<IPropsForMarkers[]>()
+  const [fifth, setfifth] = useState<IPropsForMarkers[]>()
+  const [add, setAdd] = useState(false)
 
   socket.on('kind-attacks', (data) => {
     setfirst(data)
@@ -143,88 +120,94 @@ export default function App() {
     setTopFive(data)
     setMarkers(data)
   })
+  socket.on('region-topFive', (data) => {
+    setfourth(data[0].organizeTopFive)
+    console.log(fourth)
+  })
 
   socket.on('all-region-topFive', (data) => { 
     setTopFive(data) 
     setMarkers(data)
-
   })
 
+  socket.on('all-region-topFive', (data) => {
+    console.log(data)
+    const list = []
+     for (const element1 of data as any[]) {
+      for (const element of element1.organizeTopFive) {
+        list.push(element)
+      }
+      }
+     setfourth(list)
+   
+  })
   socket.on('events-year', (data) => {
+    console.log(data)
     const list = []
     for (const element of data as IPropsForMarkers[]) {
-      const dataNaccessery = {organizationName:element.organizationName,numEvent:element.numEvent,year:element.year}
+      const dataNaccessery = { organizationName: element.organizationName, numEvent: element.numEvent, year: element.year }
       list.push(dataNaccessery)
-    }  
-    setMarkers(list)
+    }
+    setfifth(list)
   })
 
   socket.on('org-event', (data) => {
+    console.log(data)
     const list = []
     for (const element of data as IPropsForMarkers[]) {
-      const dataNaccessery = {organizationName:element.organizationName,numEvent:element.numEvent,year:element.year}
+      const dataNaccessery = { organizationName: element.organizationName, numEvent: element.numEvent, year: element.year }
       list.push(dataNaccessery)
-    }  
-    setMarkers(list)
+    }
+    setfifth(list)
   })
 
   socket.on('org-most-events-area', (data) => {
      setSixth(data)
      setMarkers(data)
   })
+  
+   
   return (
-    <div style={{ height: "100vh", width: "100vw" }}>
+    <div className="app" >
       <Nav
-        markers={markers!}
-        setMarkers={setMarkers}
-        filter={filter}
-        setFilter={setFilter}
-        queries={queries}
-        setQueries={setQueries}
-        first={first!}
-        setfirst={setfirst}
-        third={third!}
-         setThird={setThird}
+        markers={markers!}setMarkers={setMarkers}
+        filter={filter}setFilter={setFilter}
+        queries={queries} setQueries={setQueries}
+        first={first!}setfirst={setfirst}
+        third={third!}setThird={setThird}
       />
-      <div>
-        {markers != undefined && (
-          <Map
-            markers={markers!}
-            setMarkers={setMarkers}
-            filter={filter}
-            setFilter={setFilter}
-            queries={queries}
-            setQueries={setQueries}
-            topFive={topFive!}
-            setTopFive={setTopFive}
-            sixth={sixth!}
-             setSixth={setSixth}
+            <button onClick={() => setAdd(!add) }>{add ? "x" : "+"}</button>
+      <main>
+        {filter == 2 || filter == 2.1 || filter == 2.2 || filter == 2.3 || filter == 4 || filter == 4.1 || filter == 6  || add ? (
+          <Map markers={markers!}setMarkers={setMarkers}
+            filter={filter} setFilter={setFilter}
+            queries={queries}setQueries={setQueries}
+            topFive={topFive!}setTopFive={setTopFive}
+            sixth={sixth!}setSixth={setSixth}
+            add={add}
+            setAdd={setAdd}
           />
-        )}
-         
-      </div>
+        ) : ""}
+         {filter == 1 ?
+                <Graph bars={[{ key: "numCasualties", color: "#8894d8", name: "num of casualties" }]} data={first!} xKey={'attackType'} /> : ""}
+            {filter == 3 ?
+                <Graph bars={[{ key: "numEvent", color: "#f28919", name: "num of events" }]} data={third!} xKey={'month'} /> : ""}
+            {filter == 3.1 ?
+                <Graph bars={[{ key: "numEvent", color: "#f52630", name: "num of events" }]} data={third!} xKey={'year'} /> : ""}
+            {filter == 3.2 ?
+                <Graph bars={[{ key: "numEvent", color: "#26d3f5", name: "num of events" }]} data={third!} xKey={'year'} /> : ""}
+            {filter == 3.3 ?
+                <Graph bars={[{ key: "numEvent", color: "#eaf604", name: "num of events" }]} data={third!} xKey={'year'} /> : ""}
+            {filter == 4 ?
+                <Graph bars={[{ key: "numEvent", color: "#21f256", name: "num of events" }]} data={fourth!} xKey={'organName'} /> : ""}
+            {filter == 4.1 ?
+                <Graph bars={[{ key: "numEvent", color: "#5e51c0", name: "num of events" }]} data={fourth!} xKey={'organName'} /> : ""}
+            {filter == 5 ?
+                <Graph bars={[{ key: "numEvent", color: "#1322d8", name: "num of events by year" }]} data={fifth!} xKey={'organizationName'} /> : ""}
+            {filter == 5.1 ?
+                <Graph bars={[{ key: "numEvent", color: "#f245e3", name: "num of events by organization name" }]} data={fifth!} xKey={'year'} /> : ""}
+ 
+      </main>
     </div>
   );
 }
-
-// const googleStreetViewURL = (lat: number, lng: number) =>
-//   `https://www.google.com/maps/embed/v1/streetview?key=AIzaSyB0rL70fxeRtawDwZeUEp9aiNKSYvMsc_A&location=${lat},${lng}&heading=210&pitch=10&fov=90`;
-
-// function LocationMarker() {
-//   const [position, setPosition] = useState(null)
-//   const map = useMapEvents({
-//     click() {
-//       map.locate()
-//     },
-//     locationfound(e) {
-//       setPosition(e.latlng)
-//       map.flyTo(e.latlng, map.getZoom())
-//     },
-//   })
-
-//   return position === null ? null : (
-//     <Marker position={position}>
-//       <Popup>You are here</Popup>
-//     </Marker>
-//   )
-// }
