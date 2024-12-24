@@ -3,3 +3,67 @@
     margin: 0;
     box-sizing: border-box;
 }
+.app{
+    height: 150vh;
+    width: 100vw;
+   background-color: rgb(255, 228, 181);
+   display: flex;
+   align-items: center; 
+   justify-content: center;
+   flex-direction: column;
+   gap: 2em;
+}
+select{
+    border-radius: 6px;
+    width: 50vw;
+    height: 5vh;
+}
+main{
+    width: 80vw;
+    height: 100vh;
+    background-color: rgb(253, 235, 204);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+   
+}
+.grafh{
+    width:90%;
+    height: 90%;
+}
+.map{
+    width: 90%;
+    height: 90%;
+}
+.select{
+    width: 60vw;
+    height: 14vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap:1em;
+}
+.input-buttom{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-content: space-between;
+    height: 5vh;
+    width: 70%;
+}
+input{
+    border-radius: 6px;
+    width: 16vw;
+    height: 4vh;
+    padding: 2px;
+}
+button{
+    border-radius: 6px;
+    width: 16vw;
+    height: 4vh;
+    padding: 2px;
+}
+ 
