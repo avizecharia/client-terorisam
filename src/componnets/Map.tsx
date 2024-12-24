@@ -20,9 +20,12 @@ interface Props {
   setSixth: (n: IPropsForMarkers[]) => void;
   add:boolean
   setAdd:(n: boolean) => void;
+  searchBool: boolean
+  setsearchBool: (n: any) => void;
+  searchData: IPropsForMarkers[]
 }
 
-export default function Map({ filter,markers,topFive ,sixth,add}: Props) {
+export default function Map({ filter,markers,topFive ,sixth,add,searchBool,searchData}: Props) {
   const [addForm, setAddForm] = useState(false)
   const [lat, setlat] = useState<number>()
   const [lon, setlon] = useState<number>()
@@ -85,6 +88,11 @@ export default function Map({ filter,markers,topFive ,sixth,add}: Props) {
     })
     return null
   }
+  const myCenterSearch = (): [number, number] => {
+    return searchData.length > 0 && searchData != undefined
+        ? [searchData[0].lat!, searchData[0].lon!]
+        : [2, 2];
+}
   function SetMapCenter({ center }: { center: [number, number] }) {
     const map = useMap();
      
@@ -163,16 +171,35 @@ export default function Map({ filter,markers,topFive ,sixth,add}: Props) {
        <input required placeholder='summary'type="text"  value={summary} onChange={(e) => setsummary(e.target.value)}/>
        <button onClick={handelAddAttack}> +</button>
        </div>}
-    { markers != undefined &&
+    { (markers != undefined || searchBool) &&
     <div className='map' >
-        {filter == 2 ? <div> 
+        {filter == 2 && markers != undefined ? <div> 
         <MapContainer   center={myCenter() as LatLngExpression | undefined}zoom={10}scrollWheelZoom={false}style={{ height: "80vh" }}>
          <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
            {markers.map(x => x.locationArr![0].lat != null  &&  x.locationArr![0].lon != null   && <>
            <Marker position={[ x.locationArr![0].lat, x.locationArr![0].lon, ]}><Popup> region:{x.region} <br></br> city:{x.city}  <br></br>country:{x.country}  <br></br> numCasualties:{x.numCasualties}</Popup></Marker></> )} 
          </MapContainer> 
         </div> :
-      filter == 2.1 ? <div> 
+      filter == 2.1 && markers != undefined ? <div> 
+      <MapContainer  center={myCenter() as LatLngExpression | undefined}zoom={10}scrollWheelZoom={false}style={{ height: "80vh" }}>
+      <SetMapCenter center={myCenter() as [number,number]} />
+       <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+         {markers.map(x => x.locationArr![0].lat != null  &&  x.locationArr![0].lon != null   && <>
+         <Marker position={[ x.locationArr![0].lat, x.locationArr![0].lon, ]}><Popup> region:{x.region} <br></br> city:{x.city}  <br></br>country:{x.country}  <br></br> numCasualties:{x.numCasualties}</Popup></Marker></> )} 
+       </MapContainer> 
+      </div>
+         :
+         searchBool ? <div>
+                                <MapContainer center={myCenterSearch() as LatLngExpression | undefined} zoom={10} scrollWheelZoom={false} style={{ height: "80vh" }}>
+                                    <SetMapCenter center={myCenterSearch() as [number, number]} />
+                                    <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                                    {searchData.map(x => x.lat != null && x.lon != null && <>
+                                        <Marker position={[x.lat, x.lon,]}><Popup> region:{x.region} <br></br> city:{x.city}  <br></br>country:{x.country}  <br></br> nKill:{x.nkill}</Popup></Marker></>)}
+                                </MapContainer>
+                            </div>
+                                :
+          
+      filter == 2.2 && markers != undefined ?  <div> 
       <MapContainer  center={myCenter() as LatLngExpression | undefined}zoom={10}scrollWheelZoom={false}style={{ height: "80vh" }}>
       <SetMapCenter center={myCenter() as [number,number]} />
        <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
@@ -182,17 +209,7 @@ export default function Map({ filter,markers,topFive ,sixth,add}: Props) {
       </div>
          :
           
-      filter == 2.2 ? <div> 
-      <MapContainer  center={myCenter() as LatLngExpression | undefined}zoom={10}scrollWheelZoom={false}style={{ height: "80vh" }}>
-      <SetMapCenter center={myCenter() as [number,number]} />
-       <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
-         {markers.map(x => x.locationArr![0].lat != null  &&  x.locationArr![0].lon != null   && <>
-         <Marker position={[ x.locationArr![0].lat, x.locationArr![0].lon, ]}><Popup> region:{x.region} <br></br> city:{x.city}  <br></br>country:{x.country}  <br></br> numCasualties:{x.numCasualties}</Popup></Marker></> )} 
-       </MapContainer> 
-      </div>
-         :
-          
-          filter == 2.3 && markers ? <div> 
+          filter == 2.3 && markers != undefined && markers ? <div> 
           <MapContainer  center={myCenter() as LatLngExpression | undefined}zoom={10}scrollWheelZoom={false}style={{ height: "80vh" }}>
           <SetMapCenter center={myCenter() as [number,number]} />
            <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>

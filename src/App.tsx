@@ -24,6 +24,9 @@ export default function App() {
   const [third, setThird] = useState<IPropsForMarkers[]>()
   const [fourth, setfourth] = useState<IPropsForMarkers[]>()
   const [fifth, setfifth] = useState<IPropsForMarkers[]>()
+  const [searchBool, setsearchBool] = useState<boolean>(false)
+  const [searchData, setsearchData] = useState<IPropsForMarkers[]>()
+  const [thirdRange, setthirdRange] = useState<IPropsForMarkers[]>()
   const [add, setAdd] = useState(false)
 
   socket.on('kind-attacks', (data) => {
@@ -39,6 +42,10 @@ export default function App() {
     }  
     setMarkers(list)
   })
+  socket.on('search', (data) => {   
+    setsearchBool(true)
+    setsearchData(data)
+ })
 
   socket.on('region-most-hurts', (data) => {
     const list = []
@@ -82,14 +89,15 @@ export default function App() {
   socket.on('year-range-trend', (data) => {
     const list = []
     for (const element1 of data as IPropsForMarkers[][]) {
-      const data = {year:element1[0].year,numEvent:0}
+      const data = { year: element1[0].year, numEvent: 0 }
       for (const element of element1 as IPropsForMarkers[]) {
         data.numEvent += element.numEvent!
       }
       list.push(data)
-    }  
-    setThird(list)
+    }
+    setthirdRange(list)
   })
+
 
   socket.on('5year-trend', (data) => {
     const list = []
@@ -176,9 +184,10 @@ export default function App() {
         first={first!}setfirst={setfirst}
         third={third!}setThird={setThird}
       />
-            <button onClick={() => setAdd(!add) }>{add ? "x" : "+"}</button>
+      <button onClick={() => setAdd(!add) }>{add ? "x" : "+"}</button>
       <main>
-        {filter == 2 || filter == 2.1 || filter == 2.2 || filter == 2.3 || filter == 4 || filter == 4.1 || filter == 6  || add ? (
+        
+        {filter == 2 || filter == 2.1 || filter == 2.2 || filter == 2.3 || filter == 4 || filter == 4.1 || filter == 6  || add || searchBool? (
           <Map markers={markers!}setMarkers={setMarkers}
             filter={filter} setFilter={setFilter}
             queries={queries}setQueries={setQueries}
@@ -186,6 +195,9 @@ export default function App() {
             sixth={sixth!}setSixth={setSixth}
             add={add}
             setAdd={setAdd}
+            setsearchBool={setsearchBool}
+            searchBool={searchBool}
+            searchData={searchData!}
           />
         ) : ""}
          {filter == 1 ?
@@ -193,7 +205,7 @@ export default function App() {
             {filter == 3 ?
                 <Graph bars={[{ key: "numEvent", color: "#f28919", name: "num of events" }]} data={third!} xKey={'month'} /> : ""}
             {filter == 3.1 ?
-                <Graph bars={[{ key: "numEvent", color: "#f52630", name: "num of events" }]} data={third!} xKey={'year'} /> : ""}
+                <Graph bars={[{ key: "numEvent", color: "#f52630", name: "num of events" }]} data={thirdRange!} xKey={'year'} /> : ""}
             {filter == 3.2 ?
                 <Graph bars={[{ key: "numEvent", color: "#26d3f5", name: "num of events" }]} data={third!} xKey={'year'} /> : ""}
             {filter == 3.3 ?

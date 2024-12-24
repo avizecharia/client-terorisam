@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { IPropsForMarkers, IQuery } from "../types/interfaces";
 import Select from "./Select";
+import { socket } from "../main";
 interface Props {
   markers: IPropsForMarkers[];
   setMarkers: (n: IPropsForMarkers[]) => void;
@@ -24,6 +25,7 @@ export default function Nav({ filter, setFilter, queries, setQueries,setMarkers 
         queries={queries}
         setQueries={setQueries}
       /> 
+      <input style={{color:"red"}} placeholder='search event' onChange={(e)=>socket.emit('search',(e.target.value))}></input>
     </div>
   );
 }

@@ -20,10 +20,10 @@ select{
 }
 main{
     width: 80vw;
-    height: 100vh;
     background-color: rgb(253, 235, 204);
     border-radius: 10px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 10px;
