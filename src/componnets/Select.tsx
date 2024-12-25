@@ -35,8 +35,10 @@ export default function Select({ markers, filter, setFilter, queries }: Props) {
   const [organame2, setorganame2] = useState('')
 
   useEffect(() => {
-    if (filter == 1)
-      socket.emit('kind-attacks',)
+    if (filter == 1){
+      console.log("object")
+      socket.emit('kind-attacks')
+    }
 
     if (filter == 2)
       socket.emit('all-most-hurts',)
@@ -109,7 +111,6 @@ export default function Select({ markers, filter, setFilter, queries }: Props) {
       }
     }
     if (filter == 3.2)
-      console.log(999)
       socket.emit('5year-trend',)
 
     if (filter == 3.3)

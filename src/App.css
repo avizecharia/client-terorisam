@@ -19,6 +19,7 @@ select{
     height: 5vh;
 }
 main{
+    height: 800px;
     width: 80vw;
     background-color: rgb(253, 235, 204);
     border-radius: 10px;
